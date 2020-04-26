@@ -37,21 +37,25 @@ pipeline {
       stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.17.204.5:/opt/tomcat/webapps/webapp.war'
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.134.86.92:/opt/tomcat/webapps/webapp.war'
               }      
            }       
-    }
+    } 
+    stage ('Check Website health') {
+      sh "curl -m 10 http://3.134.86.92:8080/webapp/"
+        }
+   }
    stage ('DAST') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.22.119.5 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.17.204.5:8080/webapp/" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.134.86.92:8080/webapp/" || true'
         }
       }
     }  
   stage ('NMAP Port Scanner') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.22.119.5 "docker run --rm uzyexe/nmap -p 80 3.17.204.5" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "docker run --rm uzyexe/nmap -p 80 3.134.86.92" || true'
         }
       }
     }  
