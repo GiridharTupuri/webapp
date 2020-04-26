@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Devsecops Course</title>
+    <title>Devsecops Course
 
 
     <!-- Custom styles for this template -->
