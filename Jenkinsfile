@@ -51,7 +51,7 @@ pipeline {
   stage ('NMAP Port Scanner') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.22.119.5 "docker run --rm uzyexe/nmap 3.17.204.5" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.22.119.5 "docker run --rm uzyexe/nmap -p 80 3.17.204.5" || true'
         }
       }
     }  
