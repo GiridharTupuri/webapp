@@ -37,14 +37,14 @@ pipeline {
       stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.134.86:/opt/tomcat/webapps/webapp.war'
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.134.86.92:/opt/tomcat/webapps/webapp.war'
               }      
            }       
     } 
     stage ('Check Website health') {
            steps {
            sshagent(['zap']) {
-             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79.92 "curl -Is http://3.134.86.92:8080/webapp/ | head -n 1" || true'
+             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "curl -Is http://3.134.86.92:8080/webapp/ | head -n 1" || true'
           }
         }
     }
