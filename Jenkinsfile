@@ -61,6 +61,16 @@ pipeline {
          sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "docker run --rm uzyexe/nmap -F -A 3.134.86.92" || true'
         }
       }
-    }  
+    } 
+    stages {
+        stage('Slack Message') {
+            steps {
+                slackSend channel: '#jenkins',
+                    color: 'good',
+                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+            
+            }
+        }
+    }
   }
 }
