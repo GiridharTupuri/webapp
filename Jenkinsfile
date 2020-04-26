@@ -43,8 +43,8 @@ pipeline {
     } 
     stage ('Check Website health') {
            steps {
-           sshagent(['tomcat']) {
-      sh "curl -m 10 http://3.134.86.92:8080/webapp/"
+           sshagent(['zap']) {
+             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "curl -m 10 http://3.134.86.92:8080/webapp/" || true'
           }
         }
     }
