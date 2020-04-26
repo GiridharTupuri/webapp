@@ -62,6 +62,8 @@ pipeline {
         }
       }
     } 
+     }
+}
     post {
         always {
                 slackSend channel: '#cicdpipeline-tomcatdeployment',
@@ -70,5 +72,4 @@ pipeline {
         
         }
     }
-  }
-}
+ 
