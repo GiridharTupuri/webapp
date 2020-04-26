@@ -44,7 +44,7 @@ pipeline {
     stage ('Check Website health') {
            steps {
            sshagent(['zap']) {
-             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "curl -m 10 http://3.134.86.92:8080/webapp/" || true'
+             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "curl -Is http://3.134.86.92:8080/webapp/ | head -n 1" || true'
           }
         }
     }
