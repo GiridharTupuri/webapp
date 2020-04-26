@@ -4,7 +4,7 @@ pipeline {
     maven 'M2_HOME'
   }
   stages {
-    stage ('Initialize') {
+    stage ('Initialize-Maven') {
       steps {
         sh '''
                     echo "PATH = ${PATH}"
@@ -19,7 +19,7 @@ pipeline {
         sh 'cat trufflehog'
       }
     } 
-    stage ('Source Composition Analysis') {
+    stage ('Source-Composition-Analysis') {
       steps {
          sh 'rm owasp* || true'
          sh 'wget "https://raw.githubusercontent.com/GiridharTupuri/webapp/master/owasp-dependency-check.sh" '
@@ -29,7 +29,7 @@ pipeline {
         
       }
     }
-    stage ('Build') {
+    stage ('Build-War-File') {
       steps {
       sh 'mvn clean package'
        }
@@ -41,28 +41,28 @@ pipeline {
               }      
            }       
     } 
-    stage ('Check Website health') {
+    stage ('Check-Website-Health') {
            steps {
            sshagent(['zap']) {
              sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "curl -Is http://3.16.131.193:8080/webapp/ | head -n 1" || true'
           }
         }
     }
-   stage ('DAST') {
+   stage ('Dynamic-Application-Security-Testing') {
       steps {
         sshagent(['zap']) {
          sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.16.131.193:8080/webapp/" || true'
         }
       }
     }  
-  stage ('NMAP Port Scanner') {
+  stage ('NMAP-Port-Scanner') {
       steps {
         sshagent(['zap']) {
          sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "docker run --rm uzyexe/nmap -F -A 3.16.131.193" || true'
         }
       }
     } 
-    stage('Slack Message') {
+    stage('Slack-Message-Webhook') {
             steps {
                 slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
                     color: 'good',
