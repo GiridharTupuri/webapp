@@ -44,21 +44,21 @@ pipeline {
     stage ('Check Website health') {
            steps {
            sshagent(['zap']) {
-             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "curl -Is http://3.134.86.92:8080/webapp/ | head -n 1" || true'
+             sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "curl -Is http://3.16.131.193:8080/webapp/ | head -n 1" || true'
           }
         }
     }
    stage ('DAST') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.134.86.92:8080/webapp/" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.16.131.193:8080/webapp/" || true'
         }
       }
     }  
   stage ('NMAP Port Scanner') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@18.188.81.79 "docker run --rm uzyexe/nmap -F -A 3.134.86.92" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ec2-user@3.19.244.50 "docker run --rm uzyexe/nmap -F -A 3.16.131.193" || true'
         }
       }
     } 
