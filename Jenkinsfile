@@ -72,5 +72,15 @@ pipeline {
     }
     
   }
+
+
+post {
+   success {
+      println 'success'
+    }
+    failure {
+      println 'failure'
+    }
+  }
   
 }
