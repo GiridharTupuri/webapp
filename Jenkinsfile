@@ -64,23 +64,15 @@ pipeline {
     } 
   }
 post {
-   success {
-      println 'success'
-      steps {
-                slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
-                    color: 'good',
-                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
-        
-        }
-    }
-    failure {
-      println 'failure'
-      steps {
-                slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
+      always {
+        cleanWs()
+      }
+      failure {
+          slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
                     color: 'danger',
                     message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
-        
         }
     }
+   
   } 
 }
