@@ -37,7 +37,7 @@ pipeline {
       stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.16.131.19:/opt/tomcat/webapps/webapp.war'
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.16.131.193:/opt/tomcat/webapps/webapp.war'
               }      
            }       
     } 
@@ -64,9 +64,11 @@ pipeline {
     } 
     stage('Slack-Message-Webhook') {
             steps {
-                slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
-                    color: 'good',
-                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+              println 'slack msg..ikadki raadu'
+                //slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
+                 //   color: 'good',
+                  //  message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+                  
         
         }
     }
@@ -79,8 +81,13 @@ post {
       println 'success'
     }
     failure {
-      println 'failure'
+      println 'some error occured.pls fix chey '
+      steps {
+                slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
+                    color: 'good',
+                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+        
+        }
     }
-  }
-  
+  } 
 }
