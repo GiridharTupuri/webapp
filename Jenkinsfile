@@ -79,9 +79,6 @@ pipeline {
 post {
    success {
       println 'success'
-    }
-    failure {
-      println 'some error occured.pls fix chey '
       steps {
                 slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
                     color: 'good',
@@ -89,5 +86,15 @@ post {
         
         }
     }
-  } 
+    failure {
+      println 'some error occured.pls fix chey '
+      steps {
+                slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
+                    color: 'danger',
+                    message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
+        
+        }
+    }
+  }
+  
 }
