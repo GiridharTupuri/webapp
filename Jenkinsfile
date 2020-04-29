@@ -67,6 +67,7 @@ pipeline {
       build "KarataFramework_Executer"
        }   
   }
+  }
 post {
       success {
           slackSend channel: '#ci-cdjenkinspipelineexecutionbuild',
