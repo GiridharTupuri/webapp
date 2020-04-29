@@ -62,6 +62,10 @@ pipeline {
         }
       }
     } 
+  stage ('Karata_API_Test_Execution') {
+      steps {
+      build "KarataFramework_Executer"
+       }   
   }
 post {
       success {
