@@ -62,11 +62,6 @@ pipeline {
         }
       }
     } 
-  stage ('Karata_API_Test_Execution') {
-      steps {
-      build "KarataFramework_Executer"
-       }   
-  }
   }
 post {
       success {
@@ -80,4 +75,4 @@ post {
                     message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
         }
     }  
-  } 
+  }
